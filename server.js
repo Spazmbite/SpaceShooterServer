@@ -23,6 +23,12 @@ io.on('connection', (socket) => {
     io.emit('updateCoords', players); // wysyłamy do wszystkich
   });
 
+  // Kiedy klient wyśle swoje koordynaty
+  socket.on('sendBullets', (coords) => {
+    players[socket.id] = coords;
+    io.emit('updateBullets', players); // wysyłamy do wszystkich
+  });
+
   socket.on('disconnect', () => {
     delete players[socket.id];
     io.emit('updateCoords', players);
