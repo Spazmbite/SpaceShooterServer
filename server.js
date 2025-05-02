@@ -11,6 +11,7 @@ const io = require('socket.io')(http, {
 const PORT = process.env.PORT || 3000;
 
 let players = {}; // tu trzymamy dane o użytkownikach
+let bullets = {};
 
 app.use(express.static('public')); // frontend w folderze 'public'
 
@@ -24,9 +25,9 @@ io.on('connection', (socket) => {
   });
 
   // Kiedy klient wyśle swoje koordynaty
-  socket.on('sendBullets', (coords) => {
-    players[socket.id] = coords;
-    io.emit('updateBullets', players); // wysyłamy do wszystkich
+  socket.on('sendBullets', (bullet) => {
+    bullets[socket.id] = bullet;
+    io.emit('updateBullets', bullets); // wysyłamy do wszystkich
   });
 
   socket.on('disconnect', () => {
