@@ -32,3 +32,9 @@ io.on('connection', (socket) => {
 http.listen(PORT, () => {
   console.log(`Serwer działa na porcie ${PORT}`);
 });
+
+setInterval(() => {
+  fetch("https://spaceshooterserver.onrender.com")
+    .then(() => console.log("Ping!"))
+    .catch(err => console.error("Błąd pingu:", err));
+}, 10 * 60 * 1000); // co 10 minut
