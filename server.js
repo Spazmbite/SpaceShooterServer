@@ -26,8 +26,8 @@ io.on('connection', (socket) => {
 
   // Kiedy klient wyśle swoje koordynaty
   socket.on('sendBullets', (bullet) => {
-    bullets[socket.id] = bullet;
-    io.emit('updateBullets', bullets); // wysyłamy do wszystkich
+    //bullets[socket.id] = bullet;
+    io.emit('updateBullets', bullet); // wysyłamy do wszystkich
   });
 
   socket.on('disconnect', () => {
