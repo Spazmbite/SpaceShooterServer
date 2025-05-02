@@ -1,24 +1,34 @@
-const server = require('http').createServer();
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ server });
-
-const clients = new Set();
-
-wss.on('connection', ws => {
-  clients.add(ws);
-
-  ws.on('message', data => {
-    for (const client of clients) {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(data);
-      }
-    }
-  });
-
-  ws.on('close', () => clients.delete(ws));
+const express = require('express');
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
 });
 
-const PORT = process.env.PORT || 8080;
-server.listen(PORT, () => {
+const PORT = process.env.PORT || 3000;
+
+let players = {}; // tu trzymamy dane o użytkownikach
+
+app.use(express.static('public')); // frontend w folderze 'public'
+
+io.on('connection', (socket) => {
+  console.log('Użytkownik połączony:', socket.id);
+
+  // Kiedy klient wyśle swoje koordynaty
+  socket.on('sendCoords', (coords) => {
+    players[socket.id] = coords;
+    io.emit('updateCoords', players); // wysyłamy do wszystkich
+  });
+
+  socket.on('disconnect', () => {
+    delete players[socket.id];
+    io.emit('updateCoords', players);
+  });
+});
+
+http.listen(PORT, () => {
   console.log(`Serwer działa na porcie ${PORT}`);
 });
