@@ -24,10 +24,15 @@ io.on('connection', (socket) => {
     io.emit('updateCoords', players); // wysyłamy do wszystkich
   });
 
-  // Kiedy klient wyśle swoje koordynaty
+  // Kiedy klient wyśle info o strzale
   socket.on('sendBullets', (bullet) => {
     //bullets[socket.id] = bullet;
     io.emit('updateBullets', bullet); // wysyłamy do wszystkich
+  });
+
+  // Kiedy klient wyśle info log
+  socket.on('sendLog', (log) => {
+    io.emit('updateLog', log); // wysyłamy do wszystkich
   });
 
   socket.on('disconnect', () => {
