@@ -70,7 +70,7 @@ http.listen(PORT, () => {
 
 setInterval(function(){
   io.emit('updateCoords', players);
-},30);
+},20);
 
 setInterval(() => {
   fetch("https://spaceshooterserver.onrender.com")
