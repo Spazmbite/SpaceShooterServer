@@ -80,7 +80,7 @@ setInterval(function(){
 },20);
 
 setInterval(function(){
-  console.log(countBullets);
+  if(countBullets > 0){ console.log(countBullets); }
   countBullets = 0;
 },1000);
 
