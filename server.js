@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
       players[socket.id] = coords;
     }
     
-    io.emit('updateCoords', players); // wysyłamy do wszystkich
+    //io.emit('updateCoords', players); // wysyłamy do wszystkich
   });
 
 
@@ -55,11 +55,11 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     delete players[socket.id];
-    if(players[socket.id+"_1"]){ delete players[socket.id+"_1"]; }
+    /*if(players[socket.id+"_1"]){ delete players[socket.id+"_1"]; }
     if(players[socket.id+"_2"]){ delete players[socket.id+"_2"]; }
     if(players[socket.id+"_3"]){ delete players[socket.id+"_3"]; }
     if(players[socket.id+"_4"]){ delete players[socket.id+"_4"]; }
-    if(players[socket.id+"_5"]){ delete players[socket.id+"_5"]; }
+    if(players[socket.id+"_5"]){ delete players[socket.id+"_5"]; }*/
     io.emit('updateCoords', players);
   });
 });
@@ -67,6 +67,10 @@ io.on('connection', (socket) => {
 http.listen(PORT, () => {
   console.log(`Serwer działa na porcie ${PORT}`);
 });
+
+setInterval(function(){
+  io.emit('updateCoords', players);
+},30);
 
 setInterval(() => {
   fetch("https://spaceshooterserver.onrender.com")
