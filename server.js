@@ -20,9 +20,27 @@ io.on('connection', (socket) => {
 
   // Kiedy klient wyśle swoje koordynaty
   socket.on('sendCoords', (coords) => {
+    if(Array.isArray(coords)){
+      players[socket.id] = coords[0];
+      for(var p = 1 ; p < coords.length ; p++){
+        players[socket.id+"_"+p] = coords[p];
+      }
+    } else {
+      players[socket.id] = coords;
+    }
+    
+    io.emit('updateCoords', players); // wysyłamy do wszystkich
+  });
+
+
+
+  /* BACKUP
+  // Kiedy klient wyśle swoje koordynaty
+  socket.on('sendCoords', (coords) => {
     players[socket.id] = coords;
     io.emit('updateCoords', players); // wysyłamy do wszystkich
   });
+  */
 
   // Kiedy klient wyśle info o strzale
   socket.on('sendBullets', (bullet) => {
@@ -37,6 +55,11 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     delete players[socket.id];
+    if(players[socket.id+"_1"]){ delete players[socket.id+"_1"]; }
+    if(players[socket.id+"_2"]){ delete players[socket.id+"_2"]; }
+    if(players[socket.id+"_3"]){ delete players[socket.id+"_3"]; }
+    if(players[socket.id+"_4"]){ delete players[socket.id+"_4"]; }
+    if(players[socket.id+"_5"]){ delete players[socket.id+"_5"]; }
     io.emit('updateCoords', players);
   });
 });
