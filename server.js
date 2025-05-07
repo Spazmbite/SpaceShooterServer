@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 3000;
 let players = {}; // tu trzymamy dane o użytkownikach
 let bullets = {};
 
+
+var countBullets = 0;
+
 app.use(express.static('public')); // frontend w folderze 'public'
 
 io.on('connection', (socket) => {
@@ -45,6 +48,7 @@ io.on('connection', (socket) => {
   // Kiedy klient wyśle info o strzale
   socket.on('sendBullets', (bullet) => {
     //bullets[socket.id] = bullet;
+    countBullets++;
     bullets.push(bullet);
     //io.emit('updateBullets', bullet); // wysyłamy do wszystkich
   });
@@ -74,6 +78,11 @@ setInterval(function(){
   io.emit('updateBullets', bullets);
   bullets = [];
 },20);
+
+setInterval(function(){
+  console.log(countBullets);
+  countBullets = 0;
+},1000);
 
 setInterval(() => {
   fetch("https://spaceshooterserver.onrender.com")
