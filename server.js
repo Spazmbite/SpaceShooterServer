@@ -44,7 +44,8 @@ io.on('connection', (socket) => {
 
   // Kiedy klient wyśle info o strzale
   socket.on('sendBullets', (bullet) => {
-    bullets[socket.id] = bullet;
+    //bullets[socket.id] = bullet;
+    bullets.push(bullet);
     //io.emit('updateBullets', bullet); // wysyłamy do wszystkich
   });
 
