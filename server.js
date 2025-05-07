@@ -44,8 +44,8 @@ io.on('connection', (socket) => {
 
   // Kiedy klient wyśle info o strzale
   socket.on('sendBullets', (bullet) => {
-    //bullets[socket.id] = bullet;
-    io.emit('updateBullets', bullet); // wysyłamy do wszystkich
+    bullets[socket.id] = bullet;
+    //io.emit('updateBullets', bullet); // wysyłamy do wszystkich
   });
 
   // Kiedy klient wyśle info log
@@ -70,6 +70,8 @@ http.listen(PORT, () => {
 
 setInterval(function(){
   io.emit('updateCoords', players);
+  io.emit('updateBullets', bullets);
+  bullets = [];
 },20);
 
 setInterval(() => {
